@@ -39,8 +39,8 @@ class NavigationContent: Template<FlowContent> {
                         }
                         li("nav-item") {
                             a(classes = "nav-link") {
-                                href = "faq"
-                                +"""FAQ"""
+                                href = "api"
+                                +"""API"""
                             }
                         }
                         li("nav-item dropdown") {

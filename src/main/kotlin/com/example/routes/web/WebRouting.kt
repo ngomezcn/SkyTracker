@@ -15,6 +15,7 @@ enum class WebRoutesEnum(val route: String) {
     home("home"),
     satellites("satellites"),
     view_satellite("view_satellite"),
+    create_account("create_account"),
 }
 
 fun Route.webRouting() {
@@ -26,6 +27,12 @@ fun Route.webRouting() {
         get(WebRoutesEnum.home.toString()) {
             call.respondHtmlTemplate(LayoutTemplate()) {
                 route =  WebRoutesEnum.home.route
+            }
+        }
+
+        get(WebRoutesEnum.create_account.toString()) {
+            call.respondHtmlTemplate(LayoutTemplate()) {
+                route =  WebRoutesEnum.create_account.route
             }
         }
 

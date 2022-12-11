@@ -12,7 +12,6 @@ class ViewSatelliteContent: Template<FlowContent> {
 
     override fun FlowContent.apply() {
 
-
         p{
             +sat.objectName!!
         }

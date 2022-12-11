@@ -37,12 +37,10 @@ class SatelliteDAO(id: EntityID<Int>) : IntEntity(id) {
     var tleLine2 by Satellites.tleLine2
 }
 
-
-
-
 object User : Table() {
     val id: Column<Int> = integer("id").autoIncrement()
     val name: Column<String> = varchar("name", 50)
+    val email: Column<String> = varchar("email", 50)
     val password: Column<String> = varchar("password", 50)
 
     override val primaryKey = PrimaryKey(id, name = "PK_User_Id")

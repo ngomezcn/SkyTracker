@@ -15,6 +15,7 @@ class LayoutTemplate: Template<HTML> {
     // Pages content
     val satelliteListContent = TemplatePlaceholder<SatelliteListContent>()
     val viewSatelliteContent = TemplatePlaceholder<ViewSatelliteContent>()
+    val createAccountContent = TemplatePlaceholder<CreateAccountContent>()
     val homeContent = TemplatePlaceholder<HomeContent>()
 
     // Default structure
@@ -35,16 +36,6 @@ class LayoutTemplate: Template<HTML> {
                 name = "viewport"
                 content = "width=device-width, initial-scale=1, shrink-to-fit=no"
             }
-            meta {
-                name = "description"
-                content = ""
-            }
-            meta {
-                name = "author"
-                content = ""
-            }
-            title {
-            }
             link {
                 rel = "icon"
                 type = "image/x-icon"
@@ -58,6 +49,15 @@ class LayoutTemplate: Template<HTML> {
                 href = "css/styles.css"
                 rel = "stylesheet"
             }
+            link {
+                rel = "stylesheet"
+                href = "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css"
+                attributes["integrity"] = "sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd"
+                attributes["crossorigin"] = "anonymous"
+            }
+            title {
+                +"${route}"
+            }
         }
 
         body {
@@ -67,6 +67,7 @@ class LayoutTemplate: Template<HTML> {
                 WebRoutesEnum.home.route -> insert(HomeContent(), homeContent)
                 WebRoutesEnum.satellites.route -> insert(SatelliteListContent(), satelliteListContent)
                 WebRoutesEnum.view_satellite.route -> insert(ViewSatelliteContent(), viewSatelliteContent)
+                WebRoutesEnum.create_account.route -> insert(CreateAccountContent(), createAccountContent)
             }
             insert(FooterContent(), footerContent)
         }
