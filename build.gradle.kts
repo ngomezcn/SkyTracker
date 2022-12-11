@@ -37,10 +37,13 @@ dependencies {
     implementation("io.ktor:ktor-server-html-builder:$ktor_version")
 
     implementation("com.h2database:h2:2.1.214")
-
     implementation("org.slf4j:slf4j-simple:2.0.3")
     implementation("com.impossibl.pgjdbc-ng", "pgjdbc-ng", "0.8.3")
+    implementation("org.postgresql:postgresql:42.2.2")
+
+    implementation("org.slf4j:slf4j-simple:2.0.3")
     implementation("org.jetbrains.exposed", "exposed-core", "0.40.1")
     implementation("org.jetbrains.exposed", "exposed-dao", "0.40.1")
     implementation("org.jetbrains.exposed", "exposed-jdbc", "0.40.1")
+
 }

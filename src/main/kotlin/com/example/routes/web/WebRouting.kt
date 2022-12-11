@@ -1,16 +1,18 @@
 package com.example.routes.web
 
 import com.example.models.SpaceTrack.STSatelliteCatalog
-import com.example.satellitesList
+import com.example.orm.models.SatelliteDAO
+import com.example.orm.models.Satellites
 import com.example.templates.LayoutTemplate
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.html.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import org.jetbrains.exposed.sql.transactions.transaction
 
 enum class WebRoutesEnum(val route: String) {
-    home("/"),
+    home("home"),
     satellites("satellites"),
     view_satellite("view_satellite"),
 }
@@ -18,12 +20,12 @@ enum class WebRoutesEnum(val route: String) {
 fun Route.webRouting() {
     route("/") {
         get("/") {
-            call.respondHtmlTemplate(LayoutTemplate()) {
-                route = WebRoutesEnum.home.route
+            call.respondRedirect("/home")
+        }
 
-                header {
-                    +"Home"
-                }
+        get(WebRoutesEnum.home.toString()) {
+            call.respondHtmlTemplate(LayoutTemplate()) {
+                route =  WebRoutesEnum.home.route
             }
         }
 
@@ -51,29 +53,36 @@ fun Route.webRouting() {
             }
         }
         get(WebRoutesEnum.view_satellite.toString()) {
-            var id : String = ""
+            var id  = ""
+            var selectedSat : SatelliteDAO? = null
 
-            if(call.request.queryParameters["id"].isNullOrBlank()) {
+            if(call.request.queryParameters["id"].isNullOrBlank() || call.request.queryParameters["id"] == "") {
                 call.respondRedirect("/satellites")
-            } else {
+            }
                 id = call.request.queryParameters["id"]!!
-                if(satellitesList!!.find { it.NORADCATID!! == id } == null) {
-                    call.respondRedirect("/satellites")
-                } else
-                {
-                    val selSat : STSatelliteCatalog = satellitesList!!.find { it.NORADCATID!! == id }!!
-                    call.respondHtmlTemplate(LayoutTemplate()) {
-                        route = WebRoutesEnum.view_satellite.route
 
-                        header {
-                            +selSat.OBJECTNAME!!
-                        }
+                transaction {
 
-                        this.viewSatelliteContent {
-                            sat = selSat
-                        }
+                    val temp = SatelliteDAO.find { Satellites.noradCatId eq id }
+                    if(!temp.empty()) {
+                        selectedSat = SatelliteDAO.find { Satellites.noradCatId eq id }.first()
                     }
                 }
+                if(selectedSat == null) {
+                    call.respondRedirect("/satellites")
+                }
+
+                call.respondHtmlTemplate(LayoutTemplate()) {
+                    route = WebRoutesEnum.view_satellite.route
+
+                    header {
+                        +selectedSat!!.objectName!!
+                    }
+
+                    this.viewSatelliteContent {
+                        sat = selectedSat as SatelliteDAO
+                    }
+
             }
         }
     }

@@ -1,6 +1,5 @@
 package com.example.repositories
 
-import com.example.ApiClient
 import com.example.models.Position
 import com.example.models.SpaceTrack.STSatelliteCatalog
 import com.example.models.n2yo.N2VisualPasses
